@@ -1,12 +1,12 @@
-#Sounds needed:
+# Sounds needed:
 
-##Music:
+## Music:
 + menu Music
 + combat Music
 + ambient Music
 
 
-##Effects:
+## Effects:
 + Laser shoot/recharge
 + Zombie groan/death Sounds
-+ 
++
