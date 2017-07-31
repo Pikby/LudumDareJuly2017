@@ -28,7 +28,8 @@
             <string>hp = 10;
 moveSpeed = 1;
 path = path_add();
-
+aggro = false
+facing = 1;
 if(!instance_exists(objGrid))
 {
     instance_create(0,0,objGrid)
@@ -61,11 +62,17 @@ if(!instance_exists(objGrid))
     exit
 
 }
-
-if(hp&lt;0) instance_destroy();
-
+aggro = false
+if(hp&lt;0)
+{
+if(irandom(1)=1)audio_play_sound(sndZombieDie1,5,false)
+else audio_play_sound(sndZombieDie2,5,false)
+instance_destroy();
+}
 if(instance_exists(objLightFlare))
 {
+    aggro = true
+    if(objLightFlare.x &lt; x) facing = 0 else facing = 1
     if(distance_to_point(objLightFlare.x,objLightFlare.y) &lt; 500)
     {
         if(mp_grid_path(objGrid.grid, path, x,y, objLightFlare.x,objLightFlare.y,1))
@@ -78,12 +85,34 @@ if(instance_exists(objLightFlare))
 
 if(distance_to_point(objMain.x,objMain.y) &lt; 500)
 {
+    aggro = true
+    if(objMain.x &lt; x) facing = 0 else facing = 1
     if(mp_grid_path(objGrid.grid, path, x,y, objMain.x,objMain.y,1))
     {
         path_start(path,moveSpeed,path_action_stop,false);
     }
+}
 
+if(irandom(1000)= 1 &amp;&amp; aggro = true)
+{
+    rand = irandom(2)
+    switch(rand)
+    {
+        case(0):
+            audio_play_sound_at(sndZombieIdle1,x,y,0,100,300,1,false,1)
+            break;
+        case(1):
+            audio_play_sound_at(sndZombieIdle2,x,y,0,100,300,1,false,1)
+            break;
+        case(2):
+            audio_play_sound_at(sndZombieIdle3,x,y,0,100,300,1,false,1)
+            break;   
+    }
 
+}
+if(place_meeting(x,y,objMain))
+{
+objMain.dead = true;   
 }
 </string>
           </argument>
@@ -107,8 +136,17 @@ if(distance_to_point(objMain.x,objMain.y) &lt; 500)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_self()
+            <string>if(aggro = true)
+{
+    if(facing = 1) draw_sprite(sprZombieWalkRight,image_index,x,y)
+    else draw_sprite(sprZombieWalkLeft,image_index,x,y)
+}
+else
+{
+    if(facing = 1) draw_sprite(sprZombieIdleRight,image_index,x,y)
+    else draw_sprite(sprZombieIdleLeft,image_index,x,y)
 
+}
 </string>
           </argument>
         </arguments>

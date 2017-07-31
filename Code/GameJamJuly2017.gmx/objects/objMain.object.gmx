@@ -25,7 +25,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
+            <string>alpha = 0
+
+if(!audio_is_playing(mainMusic)) audio_play_sound(mainMusic,50,true)
+image_xscale = 0.1
+image_yscale = 0.1
 image_speed = 0.1
 enum curFace
 {
@@ -43,7 +47,7 @@ enum grenade
     STUN,
 };
 
-
+beamSize=16
 deltax=0;
 deltay=0;
 moveSpeed = 2;
@@ -53,8 +57,10 @@ beamLength = 0;
 energy = 1000;
 maxEnergy = 1000
 curGrenade = grenade.FLARE
-
+damage = 1;
+dead = false;
 instance_create(x,y,objLightMain)
+if(!instance_exists(objLightControl)) instance_create(0,0,objLightControl)
 </string>
           </argument>
         </arguments>
@@ -77,7 +83,9 @@ instance_create(x,y,objLightMain)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(max(keyboard_check_pressed(vk_escape),keyboard_check_pressed(ord('P'))))
+            <string>
+if(dead = true) exit
+if(max(keyboard_check_pressed(vk_escape),keyboard_check_pressed(ord('P'))))
 {
     if(global.pause = true)
     {
@@ -88,23 +96,28 @@ instance_create(x,y,objLightMain)
 
 if(global.pause = true) exit;
 
+moving = 0
 if(keyboard_check(ord('S')))
 {
-    facing = curFace.DOWN;
+        facing = curFace.DOWN;
+    moving = 1
     if(!place_meeting(x,y+moveSpeed,objWall)) y+=moveSpeed;
 }
 if(keyboard_check(ord('W')))
 {
+    moving = 1
     facing = curFace.UP;
     if(!place_meeting(x,y-moveSpeed,objWall)) y-=moveSpeed;
 }
 if(keyboard_check(ord('A')))
 {
+    moving = 1
     facing = curFace.LEFT;
     if(!place_meeting(x-moveSpeed,y,objWall)) x-=moveSpeed;
 }
 if(keyboard_check(ord('D')))
 {   
+    moving = 1
     facing = curFace.RIGHT;
     if(!place_meeting(x+moveSpeed,y,objWall)) x+=moveSpeed;
 }
@@ -115,6 +128,8 @@ if(keyboard_check(vk_space))
     
     if(energy &gt; 0)
     {
+    damage = energy/maxEnergy
+    beamSize = energy/maxEnergy * 16
     if(!audio_is_playing(lazerHold)) audio_play_sound(lazerHold,10,false)
     beamOn = true;
     energy -= 1;
@@ -124,10 +139,10 @@ if(keyboard_check(vk_space))
            
     if(beamLength &gt; 2000) beamLength = 2000;
     angle = degtorad(point_direction(x,y,mouse_x,mouse_y))
-    x1 = x+cos(angle+pi/2)*16;
-    y1 = y-sin(angle+pi/2)*16;
-    x2 = x-cos(angle+pi/2)*16;
-    y2 = y+sin(angle+pi/2)*16;
+    x1 = x+cos(angle+pi/2)*beamSize;
+    y1 = y-sin(angle+pi/2)*beamSize;
+    x2 = x-cos(angle+pi/2)*beamSize;
+    y2 = y+sin(angle+pi/2)*beamSize;
     
     for(i=1;i&lt;beamLength/16;i++)
     {
@@ -139,8 +154,10 @@ if(keyboard_check(vk_space))
             beamLength = (i)*16;   
         }
         angle = degtorad(point_direction(x,y,mouse_x,mouse_y)) 
-        instance_create(x+cos(angle)*(i*16),y-sin(angle)*(16*i),objLightBeam)
+        light = instance_create(x+cos(angle)*(i*16),y-sin(angle)*(16*i),objLightBeam)
+        with(light) lightSize = other.energy/other.maxEnergy * 5
     }
+    
     
     
     x3 = x1+cos(angle)*(beamLength+64);
@@ -148,27 +165,34 @@ if(keyboard_check(vk_space))
     x4 = x2+cos(angle)*(beamLength+64);
     y4 = y2-sin(angle)*(beamLength+64);
 
+    if(x1&lt;x3) facing = curFace.RIGHT
+    else facing = curFace.LEFT
     with(objZombie)
     {
         if(point_in_triangle(x,y,other.x1,other.y1,other.x2,other.y2,other.x3,other.y3) || point_in_triangle(x,y,other.x2,other.y2,other.x3,other.y3,other.x4,other.y4) )
-        hp -= 0.1;
+        {
+            hp -= other.damage;
+            if(!audio_is_playing(sndZombieHit)) audio_play_sound(sndZombieHit,0,false)
+        }
     }
     with(objCrate)
     {
         if(point_in_triangle(x,y,other.x1,other.y1,other.x2,other.y2,other.x3,other.y3) || point_in_triangle(x,y,other.x2,other.y2,other.x3,other.y3,other.x4,other.y4) )
-        hp -= 0.1;
+        hp -= other.damage;
     }
     
     }
-    else beamOn = false;      
-
+    else 
+    {
+    beamOn = false;      
+    if(audio_is_playing(lazerHold)) audio_stop_sound(lazerHold)
+    }
     x3 = x1+cos(angle)*(beamLength);
     y3 = y1-sin(angle)*(beamLength);   
     x4 = x2+cos(angle)*(beamLength);
     y4 = y2-sin(angle)*(beamLength);
 }
-else audio_stop_sound(lazerHold)
-
+else  if(audio_is_playing(lazerHold)) audio_stop_sound(lazerHold)
 if(keyboard_check_released(vk_space))
 {
     beamLength = 0;
@@ -192,7 +216,10 @@ if(keyboard_check_pressed(ord('E')))
     }
 }
 
-
+if(keyboard_check_released(vk_delete))
+{
+    room_restart()
+}
 </string>
           </argument>
         </arguments>
@@ -215,7 +242,19 @@ if(keyboard_check_pressed(ord('E')))
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_alpha(1)
+            <string>if(dead = true)
+{
+alpha += 1
+draw_set_alpha(alpha/100)
+draw_set_color(c_black)
+draw_rectangle(0,0,1500,1500,false)
+draw_set_halign(fa_center)
+draw_set_color(c_white)
+draw_text( view_wview[0]/2,view_hview[0]/2,"GAME OVER")
+if(alpha&gt;100) room_restart();
+}
+
+draw_set_alpha(1)
 draw_set_color(c_orange);
 draw_rectangle(0,0,energy/maxEnergy*300,100,false)
 draw_set_color(c_red);
@@ -260,10 +299,12 @@ if(global.pause = true)
           <argument>
             <kind>1</kind>
             <string>
+
+
 if(beamOn = true)
 {
 
-    draw_set_color(c_orange);
+    draw_set_color(make_color_rgb(255,255-(energy/maxEnergy)*255,255-(energy/maxEnergy)*255));
     draw_primitive_begin(pr_trianglelist);
     draw_vertex(x1,y1);
     draw_vertex(x2,y2);
@@ -274,17 +315,44 @@ if(beamOn = true)
     draw_primitive_end();
 }
 
-
-if(facing = curFace.RIGHT)
+if(beamOn = false)
 {
-    draw_sprite(mainWalkingRight,image_index,x,y)
+    if(facing = curFace.RIGHT)
+    {
+        if(moving = 1) draw_sprite(mainWalkingRight,image_index,x,y)
+         else draw_sprite(mainIdleRight,image_index,x,y)
+        
+    }
+    else if(facing = curFace.LEFT)
+    {
+        if(moving=1) draw_sprite(mainWalkingLeft,image_index,x,y)
+        else draw_sprite(mainIdleLeft,image_index,x,y)
+
+    }
+    else if(facing = curFace.DOWN)
+    {
+        if(moving = 1) draw_sprite(mainWalkingDown,image_index,x,y)
+        else draw_sprite(mainIdleRight,image_index,x,y)
+
+    }
+    else if(facing = curFace.UP)
+    {
+            if(moving = 1) draw_sprite(mainWalkingUp,image_index,x,y)
+        else draw_sprite(mainIdleLeft,image_index,x,y)
+
+    }
 }
-if(facing = curFace.LEFT)
+else
 {
-    draw_sprite(mainWalkingLeft,image_index,x,y)
-
+    if(facing = curFace.RIGHT || facing = curFace.UP)
+    {
+           draw_sprite(mainFireRight,image_index,x,y)
+    }
+    else if(facing = curFace.LEFT || facing = curFace.DOWN)
+    {
+           draw_sprite(mainFireLeft,image_index,x,y)
+    }
 }
-
 </string>
           </argument>
         </arguments>

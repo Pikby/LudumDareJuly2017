@@ -54,6 +54,7 @@
     {
         if(objMain.energy + 250 &gt; objMain.maxEnergy) objMain.energy = objMain.maxEnergy;
         else objMain.energy += 250;
+        audio_play_sound(sndEnergyPickup,5,false)
         instance_destroy()
     }
 

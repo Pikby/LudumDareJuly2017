@@ -10,6 +10,18 @@
     <sound>sound\sndFlare</sound>
     <sound>sound\sndMenuChange</sound>
     <sound>sound\sndMenuPlay</sound>
+    <sounds name="zombieSounds">
+      <sound>sound\sndZombieIdle1</sound>
+      <sound>sound\sndZombieIdle2</sound>
+      <sound>sound\sndZombieIdle3</sound>
+      <sound>sound\sndZombieDie1</sound>
+      <sound>sound\sndZombieDie2</sound>
+      <sound>sound\sndZombieHit</sound>
+    </sounds>
+    <sound>sound\sndEnergyPickup</sound>
+    <sound>sound\menuMusic</sound>
+    <sound>sound\sndBoxBreak</sound>
+    <sound>sound\mainMusic</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\sprMain</sprite>
@@ -21,6 +33,13 @@
     <sprites name="mainSprites">
       <sprite>sprites\mainWalkingRight</sprite>
       <sprite>sprites\mainWalkingLeft</sprite>
+      <sprite>sprites\mainIdleRight</sprite>
+      <sprite>sprites\mainIdleLeft</sprite>
+      <sprite>sprites\mainFireLeft</sprite>
+      <sprite>sprites\mainFireRight</sprite>
+      <sprite>sprites\mainWalkingUp</sprite>
+      <sprite>sprites\mainWalkingDown</sprite>
+      <sprite>sprites\mainFireDown</sprite>
     </sprites>
     <sprite>sprites\sprBattery</sprite>
     <sprite>sprites\sprLightFlare</sprite>
@@ -28,6 +47,12 @@
     <sprite>sprites\sprEnergyBar</sprite>
     <sprite>sprites\sprite12</sprite>
     <sprite>sprites\sprCrate</sprite>
+    <sprites name="zombieSprites">
+      <sprite>sprites\sprZombieIdleRight</sprite>
+      <sprite>sprites\sprZombieIdleLeft</sprite>
+      <sprite>sprites\sprZombieWalkRight</sprite>
+      <sprite>sprites\sprZombieWalkLeft</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\tileSheet</background>
@@ -53,9 +78,12 @@
     <object>objects\objBattery</object>
     <object>objects\objCredits</object>
     <object>objects\objCrate</object>
+    <object>objects\object15</object>
+    <object>objects\objFlarePickup</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rmMainMenu</room>
+    <room>rooms\rmLevel1</room>
     <room>rooms\rmTest</room>
   </rooms>
   <help>

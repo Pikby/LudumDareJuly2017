@@ -55,7 +55,8 @@
         mp_grid_clear_cell(grid,other.x/32,other.y/32)
 
     }
-        instance_destroy()
+    audio_play_sound(sndBoxBreak,0,false)
+    instance_destroy()
 }
 </string>
           </argument>

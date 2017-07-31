@@ -59,7 +59,7 @@ volume = 0.5
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
+            <string>if(transitioning= true) exit;
 if(curRoom = position.STARTGAME)
 {
     if(max(keyboard_check_pressed(ord('S')),keyboard_check_pressed(vk_down)))
@@ -83,6 +83,7 @@ if(curRoom = position.STARTGAME)
             case(position.STARTGAME):
             {
                 audio_play_sound(sndMenuPlay,10,false)
+                if(audio_is_playing(menuMusic)) audio_stop_sound(menuMusic)
                 transitioning = true
                 break;
             }
@@ -112,7 +113,7 @@ else if(curRoom = position.OPTIONS)
         else optionPosition = 0
     }
     
-    if(max(keyboard_check_pressed(ord('D')),keyboard_check_pressed(vk_right),keyboard_check_released(vk_enter)))
+    if(max(keyboard_check_pressed(ord('D')),keyboard_check_pressed(vk_right),keyboard_check_released(vk_enter),keyboard_check_released(vk_space)))
     {
         audio_play_sound(sndMenuChange,10,false)
         switch(optionPosition)
@@ -199,7 +200,7 @@ else if(curRoom = position.OPTIONS)
 {
     if(optionPosition = 0) draw_set_color(c_red)
     else draw_set_color(c_black)
-    draw_text_ext_transformed(room_width/2, 300, "Volume" + string(round(volume*100)), 10, 300, 2, 2, radtodeg(angle))
+    draw_text_ext_transformed(room_width/2, 300, "Volume: " + string(round(volume*100)), 10, 300, 2, 2, radtodeg(angle))
     if(optionPosition = 1) draw_set_color(c_red)
     else draw_set_color(c_black)
     draw_text_ext_transformed(room_width/2, 400, "Back", 10, 300, 2, 2, radtodeg(angle))
@@ -211,7 +212,7 @@ if(transitioning = true)
     draw_set_alpha((alpha/100))
     alpha++
     
-    if(alpha&gt;100) room_goto(rmTest)    
+    if(alpha&gt;100) room_goto(rmLevel1)    
     draw_rectangle(0,0,room_width,room_height,false)
 }
 </string>
