@@ -53,24 +53,35 @@ surfScale = 1/8;
 
 draw_clear(c_black);
 
+with(objLightFlare)
+{
+    draw_set_blend_mode(bm_subtract);
+    draw_sprite_ext(sprLightFlare,0,x*other.surfScale,y*other.surfScale,lightSize*other.surfScale,lightSize*other.surfScale,0,c_red,lightStreng);    
+    draw_set_blend_mode(bm_normal);
+}
+
+
 with(objLight)
 {
     draw_set_blend_mode(bm_src_color);
     draw_sprite_ext(sprLight,0,x*other.surfScale,y*other.surfScale,lightSize*other.surfScale,lightSize*other.surfScale,0,c_white,lightStreng);    
     draw_set_blend_mode(bm_normal);
 }
+
 with(objLightBeam)
 {
     draw_set_blend_mode(bm_src_color);
     draw_sprite_ext(sprLight,0,x*other.surfScale,y*other.surfScale,lightSize*other.surfScale,lightSize*other.surfScale,0,c_white,lightStreng);    
     draw_set_blend_mode(bm_normal);
 }
+
 with(objLightMain)
 {
     draw_set_blend_mode(bm_src_color);
     draw_sprite_ext(sprLight,0,x*other.surfScale,y*other.surfScale,lightSize*other.surfScale,lightSize*other.surfScale,0,c_white,lightStreng);    
     draw_set_blend_mode(bm_normal);
 }
+
 
 
 

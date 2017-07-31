@@ -4,28 +4,58 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\lazerHold</sound>
+    <sound>sound\lazerCharge</sound>
+    <sound>sound\sndFlare</sound>
+    <sound>sound\sndMenuChange</sound>
+    <sound>sound\sndMenuPlay</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\sprMain</sprite>
+    <sprite>sprites\sprFlare</sprite>
     <sprite>sprites\sprEnemy</sprite>
     <sprite>sprites\sprWall</sprite>
     <sprite>sprites\sprLight</sprite>
+    <sprite>sprites\sprFlareExp</sprite>
+    <sprites name="mainSprites">
+      <sprite>sprites\mainWalkingRight</sprite>
+      <sprite>sprites\mainWalkingLeft</sprite>
+    </sprites>
+    <sprite>sprites\sprBattery</sprite>
+    <sprite>sprites\sprLightFlare</sprite>
+    <sprite>sprites\sprite10</sprite>
+    <sprite>sprites\sprEnergyBar</sprite>
+    <sprite>sprites\sprite12</sprite>
+    <sprite>sprites\sprCrate</sprite>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\tileSheet</background>
+  </backgrounds>
   <paths name="paths"/>
-  <scripts name="scripts">
-    <script>scripts\script0.gml</script>
-  </scripts>
   <objects name="objects">
     <object>objects\objMain</object>
     <object>objects\objZombie</object>
     <object>objects\objWall</object>
-    <object>objects\objLightControl</object>
+    <object>objects\objLightFlare</object>
     <object>objects\objLight</object>
     <object>objects\objLightMain</object>
     <object>objects\objLightBeam</object>
+    <objects name="Controllers">
+      <object>objects\objGrid</object>
+      <object>objects\objLightControl</object>
+      <object>objects\objMainMenu</object>
+    </objects>
+    <objects name="Grenades">
+      <object>objects\objFlare</object>
+      <object>objects\objStun</object>
+    </objects>
+    <object>objects\objBattery</object>
+    <object>objects\objCredits</object>
+    <object>objects\objCrate</object>
   </objects>
   <rooms name="rooms">
+    <room>rooms\rmMainMenu</room>
     <room>rooms\rmTest</room>
   </rooms>
   <help>

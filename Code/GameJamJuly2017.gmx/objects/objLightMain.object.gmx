@@ -55,6 +55,9 @@ lightStreng = 0.2;
     y = objMain.y;
 }
 else instance_destroy();
+
+lightSize = sin(current_time/1000)+3
+lightSize = sin(current_time/1000)+3
 </string>
           </argument>
         </arguments>

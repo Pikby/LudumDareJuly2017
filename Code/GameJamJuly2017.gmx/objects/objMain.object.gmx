@@ -25,15 +25,24 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>enum curFace
+            <string>
+image_speed = 0.1
+enum curFace
 {
     UP,
     DOWN,
     LEFT,
     RIGHT,
-    
-
 };
+
+enum grenade
+{
+    NONE,
+    FLARE,
+    EXPLOSIVE,
+    STUN,
+};
+
 
 deltax=0;
 deltay=0;
@@ -43,6 +52,7 @@ beamOn = false;
 beamLength = 0;
 energy = 1000;
 maxEnergy = 1000
+curGrenade = grenade.FLARE
 
 instance_create(x,y,objLightMain)
 </string>
@@ -67,7 +77,16 @@ instance_create(x,y,objLightMain)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
+            <string>if(max(keyboard_check_pressed(vk_escape),keyboard_check_pressed(ord('P'))))
+{
+    if(global.pause = true)
+    {
+        global.pause = false
+    }
+    else global.pause = true
+}
+
+if(global.pause = true) exit;
 
 if(keyboard_check(ord('S')))
 {
@@ -92,14 +111,18 @@ if(keyboard_check(ord('D')))
 
 if(keyboard_check(vk_space))
 {
+
+    
     if(energy &gt; 0)
     {
+    if(!audio_is_playing(lazerHold)) audio_play_sound(lazerHold,10,false)
     beamOn = true;
     energy -= 1;
 
     beamLength += 5;
-    beamLength += 1.1;
+    beamLength *= 2;
            
+    if(beamLength &gt; 2000) beamLength = 2000;
     angle = degtorad(point_direction(x,y,mouse_x,mouse_y))
     x1 = x+cos(angle+pi/2)*16;
     y1 = y-sin(angle+pi/2)*16;
@@ -113,36 +136,62 @@ if(keyboard_check(vk_space))
         
         if(place_meeting(tempx,tempy,objWall))
         {
-            beamLength = i*16;   
+            beamLength = (i)*16;   
         }
         angle = degtorad(point_direction(x,y,mouse_x,mouse_y)) 
         instance_create(x+cos(angle)*(i*16),y-sin(angle)*(16*i),objLightBeam)
     }
     
     
-    x3 = x1+cos(angle)*beamLength;
-    y3 = y1-sin(angle)*beamLength;   
-   
-
-    x4 = x2+cos(angle)*beamLength;
-    y4 = y2-sin(angle)*beamLength;
+    x3 = x1+cos(angle)*(beamLength+64);
+    y3 = y1-sin(angle)*(beamLength+64);   
+    x4 = x2+cos(angle)*(beamLength+64);
+    y4 = y2-sin(angle)*(beamLength+64);
 
     with(objZombie)
     {
         if(point_in_triangle(x,y,other.x1,other.y1,other.x2,other.y2,other.x3,other.y3) || point_in_triangle(x,y,other.x2,other.y2,other.x3,other.y3,other.x4,other.y4) )
         hp -= 0.1;
     }
+    with(objCrate)
+    {
+        if(point_in_triangle(x,y,other.x1,other.y1,other.x2,other.y2,other.x3,other.y3) || point_in_triangle(x,y,other.x2,other.y2,other.x3,other.y3,other.x4,other.y4) )
+        hp -= 0.1;
+    }
+    
     }
     else beamOn = false;      
+
+    x3 = x1+cos(angle)*(beamLength);
+    y3 = y1-sin(angle)*(beamLength);   
+    x4 = x2+cos(angle)*(beamLength);
+    y4 = y2-sin(angle)*(beamLength);
 }
+else audio_stop_sound(lazerHold)
+
 if(keyboard_check_released(vk_space))
 {
     beamLength = 0;
     beamOn = false;
 }
 
+if(keyboard_check_pressed(ord('E')))
+{
+    switch(curGrenade)
+    {
+        case(grenade.FLARE):
+        {
+            flare = instance_create(x,y,objFlare)
+            with(flare)
+            {
+              targetx = mouse_x;
+              targety = mouse_y;
+            }
+            curGrenade = grenade.NONE;
+        }
+    }
+}
 
-image_angle = point_direction(x, y, mouse_x, mouse_y);
 
 </string>
           </argument>
@@ -166,10 +215,28 @@ image_angle = point_direction(x, y, mouse_x, mouse_y);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_color(c_orange);
-draw_rectangle(0,0,energy/maxEnergy*400,64,false)
-draw_set_color(c_black);
-draw_rectangle(energy/maxEnergy*400,0,400,64,false)
+            <string>draw_set_alpha(1)
+draw_set_color(c_orange);
+draw_rectangle(0,0,energy/maxEnergy*300,100,false)
+draw_set_color(c_red);
+draw_rectangle(energy/maxEnergy*300,0,300,100,false)
+draw_sprite(sprEnergyBar,sprite_index,0,0)
+
+draw_set_color(c_white)
+draw_roundrect(924,668,1020,764,true)
+if(curGrenade = grenade.FLARE)
+{
+    draw_sprite_ext(sprFlare,-1,974,718,2,2,0,c_white,1)
+}
+
+if(global.pause = true)
+{
+    draw_set_color(c_gray)
+    draw_set_alpha(0.5)
+    draw_rectangle(0,0,1024,1000,false)
+    draw_set_halign(fa_center)
+    draw_text_transformed(view_wview[0]/2,view_hview[0]/2-100,"Game Paused",2,2,0)
+}
 </string>
           </argument>
         </arguments>
@@ -205,12 +272,19 @@ if(beamOn = true)
     draw_vertex(x3,y3);
     draw_vertex(x4,y4);
     draw_primitive_end();
+}
 
 
+if(facing = curFace.RIGHT)
+{
+    draw_sprite(mainWalkingRight,image_index,x,y)
+}
+if(facing = curFace.LEFT)
+{
+    draw_sprite(mainWalkingLeft,image_index,x,y)
 
 }
 
-draw_self()
 </string>
           </argument>
         </arguments>
