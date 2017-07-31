@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>hp = 10;
-moveSpeed = 1;
+moveSpeed = 2;
 path = path_add();
 aggro = false
 facing = 1;

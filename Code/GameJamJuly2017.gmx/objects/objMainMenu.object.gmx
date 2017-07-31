@@ -92,6 +92,12 @@ if(curRoom = position.STARTGAME)
                 curRoom = position.OPTIONS
                 break;
             }
+            case(position.CONTROLS):
+            {
+                curRoom = position.CONTROLS
+                break;
+                
+            }
         
         }
     
@@ -149,11 +155,15 @@ else if(curRoom = position.OPTIONS)
                 curRoom = position.STARTGAME
                 break;
             }
-        
         }
-    
     }
-
+}
+else if(curRoom = position.CONTROLS)
+{
+    if(max(keyboard_check_released(vk_space),keyboard_check_released(vk_enter)))
+    {
+        curRoom = position.STARTGAME
+    }
 }
 </string>
           </argument>
@@ -177,12 +187,16 @@ else if(curRoom = position.OPTIONS)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_alpha(1);
+            <string>
+
+draw_set_alpha(1);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
 if(transitioning = false) angle = sin(current_time/1000)*0.1
 else angle = angle+0.2
+draw_set_color(c_green)
+draw_text_transformed(room_width/2,100,"Beam Blaster",3,3,radtodeg(-angle))
 
 if(curRoom = position.STARTGAME)
 {
@@ -204,6 +218,10 @@ else if(curRoom = position.OPTIONS)
     if(optionPosition = 1) draw_set_color(c_red)
     else draw_set_color(c_black)
     draw_text_ext_transformed(room_width/2, 400, "Back", 10, 300, 2, 2, radtodeg(angle))
+}
+else if(curRoom = position.CONTROLS)
+{
+    draw_sprite_ext(sprControls,sprite_index,room_width/2,room_height/2,1,1,radtodeg(angle)/2,c_white,1)
 }
 
 if(transitioning = true)

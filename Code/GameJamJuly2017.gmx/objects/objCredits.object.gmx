@@ -25,7 +25,33 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>height = 0;
+            <string>if(audio_is_playing(mainMusic)) audio_stop_sound(mainMusic)
+audio_play_sound(sndCredits,0,true)
+height = room_height;
+alarm[0]=30*30
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>game_end()
 </string>
           </argument>
         </arguments>
@@ -48,14 +74,42 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_text(room_width/2,0,
-"Well, we did it again\n
-If you're reading this then you thank you very much for finishing this\n
-Took us a solid 3 days\n
-Would've got a lot more done if ian brought his damn stylus\n
-But whatever we got it done\n
-Well whatever"
-)
+            <string>height--;
+draw_set_halign(fa_center)
+draw_set_valign(fa_top)
+draw_text_transformed(room_width/2,height,
+"Well, we did it again
+If you're reading this then you thank you very much for finishing this
+Took us a solid 3 days
+Would've got a lot more done if ian brought his damn stylus(JK)
+But whatever we got it done
+
+ANIMATION AND CHARACTER DESIGN:
+Ian Wang
+(Atleast you remembered the beer)
+
+SOUND:
+Will Wang 
+(I dont know why he wanted this as the credit music)
+
+TILES:
+Gordon Gao 
+(One of these days I swear)
+
+PROGRAMMER: 
+Jacob Jensen
+(PS: Blame me for any and all the bugs, but blame gordon for the fact 
+that i didnt get any tiles till there was less the 20 hours left
+im also writing this credits as with less then an hour to submit soooooo
+
+JK
+This was really fun to do and I enjoyed it alot
+I hope everyone else enjoyed playing and making games as well!
+
+
+But, i'll do you a favour and close out the game now)
+"
+,1.5,1.5,0)
 </string>
           </argument>
         </arguments>

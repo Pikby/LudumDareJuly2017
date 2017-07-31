@@ -95,6 +95,7 @@ if(max(keyboard_check_pressed(vk_escape),keyboard_check_pressed(ord('P'))))
 }
 
 if(global.pause = true) exit;
+if(x&gt;room_width) room_goto_next()
 
 moving = 0
 if(keyboard_check(ord('S')))
