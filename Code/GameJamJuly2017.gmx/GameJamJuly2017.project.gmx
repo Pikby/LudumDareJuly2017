@@ -85,10 +85,10 @@
     <object>objects\objFlarePickup</object>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rmCredits</room>
     <room>rooms\rmMainMenu</room>
     <room>rooms\rmLevel1</room>
     <room>rooms\rmLevel2</room>
+    <room>rooms\rmCredits</room>
     <room>rooms\rmTest</room>
   </rooms>
   <help>
