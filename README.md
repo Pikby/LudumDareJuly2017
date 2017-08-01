@@ -15,9 +15,9 @@ There are hitbox errors although we could not fix those in time.
 The game is very difficult and requires lots of resource management and memorizing enemy spawns because our lead programmer wanted to make this game almost impossible to win.
 
 ## Credits
-- Jacob Jensen: Programmer
-- Gordon Gao: Tileset Artist
-- Ian Wang: Spritesheet Artist
-- William Wang: Sound Design
-- Cole Watson: Voice Actor
+- **Jacob Jensen**: Programmer
+- **Gordon Gao**: Tileset Artist
+- **Ian Wang**: Spritesheet Artist
+- **William Wang**: Sound Design
+- **Cole Watson**: Voice Actor
 
