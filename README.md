@@ -9,12 +9,10 @@ You are a space marine who was shot down to Earth and must now scavenge for supp
 ## Controls
 WASD to move, E to shoot a flare, Esc or P to pause, and Del to restart the level.
 
-### Notes
+## Notes
 We were originally going to make multiple grenades but we only got around to making the flare.
 There are hitbox errors although we could not fix those in time.
 The game is very difficult and requires lots of resource management and memorizing enemy spawns because our lead programmer wanted to make this game almost impossible to win.
-
-We haven't even seen the credits by playing through ourselves. 
 
 ## Credits
 - Jacob Jensen: Programmer
